@@ -1,15 +1,24 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const day2Routes = require('./Routes/Day2Routes');
+
+// Load env vars
+dotenv.config();
+
+// Connect to MongoDB
+connectDB();
+
+// Init express
 const app = express();
-const PORT = 3001;
+app.use(express.json());
 
-app.get('/', (req,res)=>{
-    res.send('Server had Started');
-})
+// Routes
+app.use('/api', day2Routes);
 
-app.get('/about', (req,res)=>{
-    res.send('This is About Page');
-})
 
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`);
-})   
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
